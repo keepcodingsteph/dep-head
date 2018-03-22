@@ -1,4 +1,4 @@
-package com.ledhead.di;
+package com.ledhead.di.annotation;
 
 import java.lang.annotation.*;
 

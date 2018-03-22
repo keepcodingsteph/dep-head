@@ -11,16 +11,19 @@ public interface Container {
      * @param type
      * @param <T>
      * @return
+     * @throws ResolutionException if the type cannot be resolved.
      */
-    <T> T resolve(Class<? extends T> type);
+    <T> T resolve(Class<? extends T> type) throws ResolutionException;
 
     /**
-     * Resolves the type and returns the container resolved instance of type T requested.
+     * Resolves the type and returns the container resolved instance of type T with registered name requested. This
+     * method will only return a resolution that has the provided name and type.
      *
      * @param type
      * @param name
      * @param <T>
      * @return
+     * @throws ResolutionException if the type cannot be resolved by name.
      */
     <T> T resolve(Class<? extends T> type, String name);
 
