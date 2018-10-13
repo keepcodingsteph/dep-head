@@ -1,5 +1,8 @@
 package com.ledhead.di;
 
+import com.ledhead.di.lifecycle.LifecycleManager;
+import com.ledhead.di.lifecycle.LifecycleType;
+
 /**
  * Interface for a dependency injection container which holds a specified DI context.
  */
@@ -13,7 +16,7 @@ public interface Container {
      * @return
      * @throws ResolutionException if the type cannot be resolved.
      */
-    <T> T resolve(Class<? extends T> type) throws ResolutionException;
+    <T> T resolve(Class<T> type) throws ResolutionException;
 
     /**
      * Resolves the type and returns the container resolved instance of type T with registered name requested. This
@@ -25,10 +28,12 @@ public interface Container {
      * @return
      * @throws ResolutionException if the type cannot be resolved by name.
      */
-    <T> T resolve(Class<? extends T> type, String name);
+    <T> T resolve(Class<T> type, String name);
 
     /**
      * Register a type resolution of resolutionType for targetType.
+     *
+     * Assumes {@link com.ledhead.di.lifecycle.PerRequestLifecycleManager}.
      *
      * @param targetType
      * @param resolutionType
@@ -40,6 +45,8 @@ public interface Container {
     /**
      * Register a type resolution of resolutionType for targetType with the provided name.
      *
+     * Assumes {@link com.ledhead.di.lifecycle.PerRequestLifecycleManager}.
+     *
      * @param targetType
      * @param resolutionType
      * @param name
@@ -47,4 +54,49 @@ public interface Container {
      * @throws ResolutionConflictException if an ambiguous resolution for targetType and resolutionType already exists.
      */
     <T> void registerType(Class<T> targetType, Class<? extends T> resolutionType, String name) throws ResolutionConflictException;
+
+    /**
+     * Register a type resolution of resolutionType for targetType using provided lifecycleManager.
+     *
+     * @param targetType
+     * @param resolutionType
+     * @param lifecycleManager
+     * @param <T>
+     */
+    <T> void registerType(Class<T> targetType, Class<? extends T> resolutionType, LifecycleManager<? extends T> lifecycleManager);
+
+    /**
+     * Register a type resolution of resolutionType for targetTYpe with provided name using provided lifecycleManager.
+     * @param targetType
+     * @param resolutionType
+     * @param name
+     * @param lifecycleManager
+     * @param <T>
+     */
+    <T> void registerType(Class<T> targetType, Class<? extends T> resolutionType, String name, LifecycleManager<? extends T> lifecycleManager);
+
+    /**
+     * Register a type resolution of resolutionType for targetType with desired lifecycleType.
+     *
+     * @seealso LifecycleType
+     *
+     * @param targetType
+     * @param resolutionType
+     * @param lifecycleType
+     * @param <T>
+     */
+    <T> void registerType(Class<T> targetType, Class<? extends T> resolutionType, LifecycleType lifecycleType);
+
+    /**
+     * Register a type resolution of resolutionType for targetType with provided name with desired lifecycleType.
+     *
+     * @seealso LifecycleType
+     *
+     * @param targetType
+     * @param resolutionType
+     * @param name
+     * @param lifecycleType
+     * @param <T>
+     */
+    <T> void registerType(Class<T> targetType, Class<? extends T> resolutionType, String name, LifecycleType lifecycleType);
 }
